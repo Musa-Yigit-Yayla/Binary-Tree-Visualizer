@@ -42,10 +42,30 @@ function drawTree(root){
     setCanvas(ctx, root, LEFT_INSET + halfWidth);
     
 }
-function setCanvas(ctx, halfWidth){
-    //let root = TreeUtility.root;
-    let currNode = root;
-    preorderDraw(currNode, LEFT_INSET + halfWidth, TOP_INSET, null, halfWidth, ctx);
+function setCanvas(ctx, root, x, y = 50) {
+    if (root !== null) {
+        let leftChild = root.leftChild;
+        let rightChild = root.rightChild;
+        let dx = 100;
+        let dy = 50;
+
+        drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + root.value);
+
+        if (leftChild !== null) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - dx, y + dy);
+            ctx.stroke();
+            setCanvas(ctx, leftChild, x - dx, y + dy);
+        }
+        if (rightChild !== null) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + dx, y + dy);
+            ctx.stroke();
+            setCanvas(ctx, rightChild, x + dx, y + dy);
+        }
+    }
 }
 //draw the circles into the canvas in a preorder fashion
 function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
@@ -63,7 +83,7 @@ function generateTree(){
 
 
     arr = [];
-    let length = Math.random() % 8 + 8;
+    let length = Math.floor(Math.random() % 8) + 8;
     for(let i = 0; i < length; i++){
         let newNumber = getNewNumber(arr);
         arr.push(newNumber);
@@ -100,24 +120,23 @@ function contains(key, ... array){
 function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-    //if (fill) {
-      ctx.fillStyle = 'orange';
-      ctx.fill();
-    //}
-    //if (stroke) {
-      ctx.lineWidth = strokeWidth;
-      ctx.strokeStyle = 'black';
-      ctx.stroke();
-
-      //fill text
-      ctx.beginPath();
-      ctx.lineWidth = 50;
-      ctx.fillStyle = "green";
-      ctx.textAlign = 'right';
-      ctx.fillText(nodeValue, x, y);
-      ctx.fill();
-    //}
-  }
+    if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+    }
+    if (stroke) {
+        ctx.lineWidth = strokeWidth;
+        ctx.strokeStyle = stroke;
+        ctx.stroke();
+    }
+    // Fill text
+    ctx.beginPath();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText(nodeValue, x, y);
+    ctx.fill();
+}
   // Use the onload event handler to generate and visualize the binary tree
 window.onload = () => {
     drawTree(root); // This calls the original createBinaryTree function

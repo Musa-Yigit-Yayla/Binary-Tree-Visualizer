@@ -18,7 +18,7 @@ function createBinaryTree(... arr){
     currSelection = BINARY_TREE_SELECTION;
     generateArray(INITIAL_NODE_COUNT);
     for(let i = 0; i < arr.length; i++){
-        let curr = arr[i]; //asdsadsa
+        let curr = arr[i];
         add(curr, arr);
     }
     return root;
@@ -230,15 +230,15 @@ function removeByValueBT(value){
 
 function add(value, ... arr){
     if(currSelection === BINARY_TREE_SELECTION){
-        root = addBTHelper(arr, 0);
+        root = addBTHelper(root, arr, 0);
     }
     else{
-        root = addBSTHelper(arr, 0);
+        root = addBSTHelper(arr, null, 0);
     }
     return root;
 }
 //Binary Tree insertion helper
-function addBTHelper(arr, i){
+function addBTHelper(prevNode, arr, i){
     let curr = null;
     if(i < arr.length){
         curr = new TreeNode(arr[i]);
