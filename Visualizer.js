@@ -25,7 +25,7 @@ function drawTree() {
         noOfLeftNodes++;
         currNode = currNode.leftChild;
     }
-
+    console.log("No of leftnode count is: " + noOfLeftNodes )
     // Calculate the half width based on the number of nodes on the left side
     let nodeX = parseInt(NODE_RADIUS * Math.sqrt(2), 10);
     let halfWidth = 0.0;
@@ -153,7 +153,7 @@ window.onload = () => {
     drawTree(ctx, root, halfWidth); // Pass the context of the canvas and halfWidth as parameters
 }*/
 window.onload = () => {
-    generateTree();
+    //generateTree();
 };
 
 

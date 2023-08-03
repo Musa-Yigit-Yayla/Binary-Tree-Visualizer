@@ -19,8 +19,10 @@ function createBinaryTree(...arr) {
     generateArray(INITIAL_NODE_COUNT);
     for (let i = 0; i < arr.length; i++) {
         let curr = arr[i];
+        console.log("element " + i + " is: " + curr);
         add(curr, arr);
     }
+    //add(arr[0], arr); //!!!! YOU MAY HAVE TO ALTERNATE CREATE BINARY SEARCH TREE
     drawTree(); // Instead of returning root, directly draw the tree
 }
 
@@ -230,8 +232,14 @@ function removeByValueBT(value){
 }
 
 function add(value, ... arr){
-    if(currSelection === BINARY_TREE_SELECTION){
+    /*if(currSelection === BINARY_TREE_SELECTION && arr.length !== 0
+        && arr[0] === value){
         root = addBTHelper(0, arr);
+        //add the root
+    }
+    else */if(currSelection === BINARY_TREE_SELECTION){
+        //add regular value
+        createBinaryTreeFromArray(arr);
     }
     else{
         if(root === null){
@@ -245,6 +253,7 @@ function add(value, ... arr){
     }
 }
 //Binary Tree insertion helper
+//This method will only be invoked when we add the root
 function addBTHelper(i, ... arr){
     let curr = null;
     if(i < arr.length){
@@ -253,8 +262,43 @@ function addBTHelper(i, ... arr){
         let rightIndex = 2 * i + 2;
         curr.leftChild = addBTHelper(leftIndex, arr);
         curr.rightChild = addBTHelper(rightIndex, arr);
+        console.log("Curr is: " + curr.value);
+        if(curr.leftChild !== null)
+            console.log("Curr.left is: " + curr.leftChild.value);
+        if(curr.rightChild !== null)
+            console.log("Curr.left is: " + curr.rightChild.value);
     }
     return curr;
+}
+//Use this method instead of addBTHelper
+//Will be used when we create regular binary tree
+function createBinaryTreeFromArray(arr) {
+    if (!arr || arr.length === 0) {
+      return null;
+    }
+  
+    const newRoot = new TreeNode(arr[0]);
+    const queue = [newRoot];
+  
+    for (let i = 1; i < arr.length; i++) {
+      const newNode = new TreeNode(arr[i]);
+      const parentNode = queue[0]; // Get the first node in the queue (parent of the current node)
+  
+      if (!parentNode.leftChild) {
+        parentNode.leftChild = newNode;
+      } else if (!parentNode.rightChild) {
+        parentNode.rightChild = newNode;
+        queue.shift(); // Remove the parent node from the queue since it has both children now
+      }
+  
+      queue.push(newNode); // Add the new node to the queue
+    }
+  
+    root = newRoot;
+  }
+//Second helper for adding binary tree
+function addBTHelper2(){
+
 }
 function addBSTHelper(currNode, parentNode, value){
     if(currNode === null){//correct position is found insert and link to the parent
