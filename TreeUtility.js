@@ -21,7 +21,6 @@ function createBinaryTree(... arr){
         let curr = arr[i];
         add(curr, arr);
     }
-    return root;
 }
 function createBinarySearchTree(... arr){
     currSelection = BINARY_SEARCH_TREE_SELECTION;
@@ -230,37 +229,39 @@ function removeByValueBT(value){
 
 function add(value, ... arr){
     if(currSelection === BINARY_TREE_SELECTION){
-        root = addBTHelper(root, arr, 0);
+        root = addBTHelper(0, arr);
     }
     else{
-        root = addBSTHelper(arr, null, 0);
+        if(root === null){
+            let newNode = new Node(value);
+            root = newNode;
+        }
+        for(let i = 1; i < arr.length; i++){
+            let currValue = arr[i];
+            addBSTHelper( null, root, currValue);
+        }
     }
-    return root;
 }
 //Binary Tree insertion helper
-function addBTHelper(prevNode, arr, i){
+function addBTHelper(i, ... arr){
     let curr = null;
     if(i < arr.length){
         curr = new TreeNode(arr[i]);
         let leftIndex = 2 * i + 1;
         let rightIndex = 2 * i + 2;
-        curr.leftChild = addBTHelper(arr, leftIndex);
-        curr.rightChild = addBTHelper(arr, rightIndex)
+        curr.leftChild = addBTHelper(leftIndex, arr);
+        curr.rightChild = addBTHelper(rightIndex, arr);
     }
     return curr;
 }
 function addBSTHelper(currNode, parentNode, value){
-    if(root === null){
-        let newNode = new Node(value);
-        root = newNode;
-    }
-    else if(currNode === null){//correct position is found insert and link to the parent
+    if(currNode === null){//correct position is found insert and link to the parent
         let newNode = new Node(value); 
         if(parentNode.value > value){
             parentNode.leftChild = newNode;
         }
         else{
-            parentNode.leftChild = newNode;
+            parentNode.rightChild = newNode;
         }
     }
     else if(value < currNode.value){
@@ -269,7 +270,7 @@ function addBSTHelper(currNode, parentNode, value){
     else{
         addBSTHelper(currNode.rightChild, currNode, value);
     }
-    return root; //the very passed initial root is returned
+    //return root; //the very passed initial root is returned
 }
 //Will be used when the parent of a child node has to be retrieved
 //If the given node is a null pointer or an irrelevant node the function will return false
