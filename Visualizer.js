@@ -39,31 +39,15 @@ function drawTree() {
     const ctx = canvas.getContext("2d");
     setCanvas(ctx, halfWidth);
 }
-function setCanvas(ctx, root, x, y = 50) {
-    if (root !== null) {
-        let leftChild = root.leftChild;
-        let rightChild = root.rightChild;
+function setCanvas(ctx, halfWidth) {
+    if (root !== null) { // Use the global root variable directly
+        let y = 50; // Set the initial y-coordinate
         let dx = 100;
         let dy = 50;
-
-        drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + root.value);
-
-        if (leftChild !== null) {
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x - dx, y + dy);
-            ctx.stroke();
-            setCanvas(ctx, leftChild, x - dx, y + dy);
-        }
-        if (rightChild !== null) {
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + dx, y + dy);
-            ctx.stroke();
-            setCanvas(ctx, rightChild, x + dx, y + dy);
-        }
+        preorderDraw(root, halfWidth, y, null, halfWidth / 2, ctx); // Pass null as parent and halfWidth / 2 as currLineWidthDiff
     }
 }
+
 //draw the circles into the canvas in a preorder fashion
 function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
     if(root != null){
@@ -74,27 +58,25 @@ function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
     }
 }
 //Invoke when the regenerate button is clicked
-function generateTree(){
+function generateTree() {
     let isBSTCalled = false;
-    //set isBSTCalled with respect to event source
-
+    // set isBSTCalled with respect to event source
 
     arr = [];
     let length = Math.floor(Math.random() % 8) + 8;
-    for(let i = 0; i < length; i++){
+    for (let i = 0; i < length; i++) {
         let newNumber = getNewNumber(arr);
         arr.push(newNumber);
     }
-    //start the generation of tree based on the current selection
-    if(isBSTCalled){
+    // start the generation of tree based on the current selection
+    if (isBSTCalled) {
         currSelection = BINARY_SEARCH_TREE_SELECTION;
-    }
-    else{
+    } else {
         currSelection = BINARY_TREE_SELECTION;
     }
-    createBinaryTree(arr);
-    drawTree();
+    createBinaryTree(...arr); // Use the spread operator to pass array elements as separate arguments
 }
+
 function getNewNumber(... array){
     if(array.length !== MAX_LENGTH){
         let result = Math.floor(Math.random() * MAX_LENGTH) + 1;

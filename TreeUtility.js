@@ -14,7 +14,7 @@ let invokeCount = 0; //this is the invoke count of getInorderSuccessor
 
 //expects an integer array as argument with length no more than 7
 //creates a complete binary tree from scratch
-function createBinaryTree(... arr) {
+function createBinaryTree(...arr) {
     currSelection = BINARY_TREE_SELECTION;
     generateArray(INITIAL_NODE_COUNT);
     for (let i = 0; i < arr.length; i++) {
@@ -23,6 +23,7 @@ function createBinaryTree(... arr) {
     }
     drawTree(); // Instead of returning root, directly draw the tree
 }
+
 function createBinarySearchTree(... arr){
     currSelection = BINARY_SEARCH_TREE_SELECTION;
     return createBinaryTree(arr);
