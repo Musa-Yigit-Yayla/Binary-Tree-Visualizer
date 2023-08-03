@@ -17,30 +17,27 @@ function domloaded(){
     createBinaryTree();
     drawTree();
 }*/
-function drawTree(root){
-    //retrieve the number of nodes on the left side starting from the root
+function drawTree() {
+    // Retrieve the number of nodes on the left side starting from the root
     let noOfLeftNodes = 0;
     let currNode = root;
     let counter = 0;
-    while(currNode !== null){
+    while (currNode !== null) {
         counter++;
         currNode = currNode.leftChild;
     }
     let nodeX = parseInt(NODE_RADIUS * Math.sqrt(2), 10);
-    let halfWidth = NODE_RADIUS * Math.pow(NEXT_LINE_PROPORTION, counter);
+    let halfWidth = 0.0;
     let currLineWidthDifference = INITIAL_ROOT_CHILD_LINE_WIDTH;
-    for(let i = 1; i <= counter; i++){
+    for (let i = 1; i <= counter; i++) {
         halfWidth += nodeX + currLineWidthDifference;
         currLineWidthDifference *= NEXT_LINE_PROPORTION;
     }
-    //now we have obtained the width from the left most node
-    //proceed with drawing the tree
+    // Now we have obtained the width from the leftmost node
+    // Proceed with drawing the tree
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
-    //ctx.fillStyle("#FFA500"); // orange
-    //traverse the nodes in a preorder fashion and draw the canvas
-    setCanvas(ctx, root, LEFT_INSET + halfWidth);
-    
+    setCanvas(ctx, halfWidth);
 }
 function setCanvas(ctx, root, x, y = 50) {
     if (root !== null) {
@@ -138,6 +135,7 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fill();
 }
   // Use the onload event handler to generate and visualize the binary tree
-window.onload = () => {
-    drawTree(root); // This calls the original createBinaryTree function
-};
+  window.onload = () => {
+    generateTree();
+    setCanvas(ctx, root, halfWidth); // Directly use the global root variable
+}
