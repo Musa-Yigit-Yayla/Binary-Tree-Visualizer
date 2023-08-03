@@ -17,11 +17,14 @@ let invokeCount = 0; //this is the invoke count of getInorderSuccessor
 function createBinaryTree(...arr) {
     currSelection = BINARY_TREE_SELECTION;
     generateArray(INITIAL_NODE_COUNT);
-    for (let i = 0; i < arr.length; i++) {
+    /*for (let i = 0; i < arr.length; i++) {
         let curr = arr[i];
         console.log("element " + i + " is: " + curr);
         add(curr, arr);
-    }
+    }*/
+    add(arr[0], arr);
+    console.log("Before we pass into the drawTree function we will preorder traverse");
+    console.log(preorderTraverse(root));
     //add(arr[0], arr); //!!!! YOU MAY HAVE TO ALTERNATE CREATE BINARY SEARCH TREE
     drawTree(); // Instead of returning root, directly draw the tree
 }
@@ -37,6 +40,7 @@ function preorderTraverse(currNode){
         str += preorderTraverse(currNode.leftChild);
         str += preorderTraverse(currNode.rightChild);
     }
+    //console.log(str);
     return str;
 
 }
@@ -228,7 +232,7 @@ function removeByValueBT(value){
         }
     }
     array = newArr;
-    createBinaryTree;
+    createBinaryTree(array);
 }
 
 function add(value, ... arr){
@@ -272,26 +276,27 @@ function addBTHelper(i, ... arr){
 }
 //Use this method instead of addBTHelper
 //Will be used when we create regular binary tree
-function createBinaryTreeFromArray(arr) {
-    if (!arr || arr.length === 0) {
+function createBinaryTreeFromArray(... arr) {
+    if (arr.length === 0) {
       return null;
     }
   
-    const newRoot = new TreeNode(arr[0]);
-    const queue = [newRoot];
+    let newRoot = new TreeNode(arr[0]);
+    let parents = [newRoot];
   
     for (let i = 1; i < arr.length; i++) {
-      const newNode = new TreeNode(arr[i]);
-      const parentNode = queue[0]; // Get the first node in the queue (parent of the current node)
-  
-      if (!parentNode.leftChild) {
+      let newNode = new TreeNode(arr[i]);
+      let parentNodeIndex = ((i - 1) / 2);
+      let parentNode = parents[parentNodeIndex]; // Get the first node in the queue (parent of the current node)
+    
+      if (parentNodeIndex * 2 + 1 === i) {
         parentNode.leftChild = newNode;
-      } else if (!parentNode.rightChild) {
+      }
+      else if (parentNodeIndex * 2 + 2 === i) {
         parentNode.rightChild = newNode;
-        queue.shift(); // Remove the parent node from the queue since it has both children now
       }
   
-      queue.push(newNode); // Add the new node to the queue
+      parents[parents.length] = newNode; // Add the new node to the array
     }
   
     root = newRoot;
