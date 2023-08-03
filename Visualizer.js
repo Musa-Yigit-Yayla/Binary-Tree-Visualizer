@@ -117,7 +117,24 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fill();
 }
   // Use the onload event handler to generate and visualize the binary tree
-  window.onload = () => {
+window.onload = () => {
     generateTree();
-    setCanvas(ctx, root, halfWidth); // Directly use the global root variable
+    const canvas = document.getElementById("TreePane");
+    const ctx = canvas.getContext("2d");
+    const nodeX = parseInt(NODE_RADIUS * Math.sqrt(2), 10);
+    let counter = 0;
+    let currNode = root;
+    while (currNode !== null) {
+        counter++;
+        currNode = currNode.leftChild;
+    }
+    let halfWidth = 0.0;
+    let currLineWidthDifference = INITIAL_ROOT_CHILD_LINE_WIDTH;
+    for (let i = 1; i <= counter; i++) {
+        halfWidth += nodeX + currLineWidthDifference;
+        currLineWidthDifference *= NEXT_LINE_PROPORTION;
+    }
+    drawTree(ctx, root, halfWidth); // Pass the context of the canvas and halfWidth as parameters
 }
+
+
