@@ -18,35 +18,51 @@ function domloaded(){
     drawTree();
 }*/
 function drawTree() {
-    // Retrieve the number of nodes on the left side starting from the root
+    // Calculate the number of nodes on the left side starting from the root
     let noOfLeftNodes = 0;
     let currNode = root;
-    let counter = 0;
     while (currNode !== null) {
-        counter++;
+        noOfLeftNodes++;
         currNode = currNode.leftChild;
     }
+
+    // Calculate the half width based on the number of nodes on the left side
     let nodeX = parseInt(NODE_RADIUS * Math.sqrt(2), 10);
     let halfWidth = 0.0;
     let currLineWidthDifference = INITIAL_ROOT_CHILD_LINE_WIDTH;
-    for (let i = 1; i <= counter; i++) {
+    for (let i = 1; i <= noOfLeftNodes; i++) {
         halfWidth += nodeX + currLineWidthDifference;
         currLineWidthDifference *= NEXT_LINE_PROPORTION;
     }
-    // Now we have obtained the width from the leftmost node
+
     // Proceed with drawing the tree
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
-    setCanvas(ctx, halfWidth);
+    setCanvas(ctx, root, halfWidth, TOP_INSET);
 }
-function setCanvas(ctx, halfWidth) {
-    if (root !== null) { // Use the global root variable directly
-        let y = 50; // Set the initial y-coordinate
-        let dx = 100;
-        let dy = 50;
-        preorderDraw(root, halfWidth, y, null, halfWidth / 2, ctx); // Pass null as parent and halfWidth / 2 as currLineWidthDiff
+
+function setCanvas(ctx, root, halfWidth) {
+    if (root === null) {
+        return;
+    }
+
+    const queue = [];
+    queue.push({ node: root, x: halfWidth, y: TOP_INSET });
+
+    while (queue.length > 0) {
+        const { node, x, y } = queue.shift();
+        drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + node.value);
+
+        if (node.leftChild !== null) {
+            queue.push({ node: node.leftChild, x: x - (halfWidth / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y: y + INITIAL_ROOT_CHILD_LINE_HEIGHT });
+        }
+
+        if (node.rightChild !== null) {
+            queue.push({ node: node.rightChild, x: x + (halfWidth / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y: y + INITIAL_ROOT_CHILD_LINE_HEIGHT });
+        }
     }
 }
+
 
 //draw the circles into the canvas in a preorder fashion
 function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
@@ -116,7 +132,7 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fillText(nodeValue, x, y);
     ctx.fill();
 }
-  // Use the onload event handler to generate and visualize the binary tree
+/*  // Use the onload event handler to generate and visualize the binary tree
 window.onload = () => {
     generateTree();
     const canvas = document.getElementById("TreePane");
@@ -135,6 +151,9 @@ window.onload = () => {
         currLineWidthDifference *= NEXT_LINE_PROPORTION;
     }
     drawTree(ctx, root, halfWidth); // Pass the context of the canvas and halfWidth as parameters
-}
+}*/
+window.onload = () => {
+    generateTree();
+};
 
 
