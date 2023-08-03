@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Visualizer</title>
 </head>
-
 <body>
     <div class="inputReceiver">
         <input type="text" id="elementTf" size="3">
@@ -15,8 +13,8 @@
         <input type="radio" value="Binary Search Tree" id="bstSelector">
         <label for="bstSelector">Binary Search Tree</label>
         <input type="radio" value="Binary Tree" id="btSelector">
-        <label for="btSelector">Binary Tree</label>
-
+        <label for="btSelector">Binary Tree</label>     
+        
     </div>
     <div>
         <button type="button">add</button>
@@ -28,9 +26,9 @@
     <script src="TreeUtility.js"></script>
     <script src="Visualizer.js"></script>
     <script>
-        generateTree(); //call the function directly
+        let currElt = createBinaryTree();
+        drawTree(currElt);
     </script>
-
+    
 </body>
-
 </html>

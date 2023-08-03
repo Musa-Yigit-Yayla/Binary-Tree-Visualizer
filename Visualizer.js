@@ -38,76 +38,59 @@ function drawTree() {
     // Proceed with drawing the tree
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
-    setCanvas(ctx, root, canvas.width / 2, TOP_INSET, 1, "root");
+    setCanvas(ctx, root, halfWidth, TOP_INSET);
 }
 
-
-
-
-function setCanvas(ctx, currNode, x, y, level, direction) {
-    if (currNode === null) {
+function setCanvas(ctx, root, halfWidth) {
+    if (root === null) {
         return;
     }
 
-    drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + currNode.value);
+    const queue = [];
+    queue.push({ node: root, x: halfWidth, y: TOP_INSET });
 
-    const nextY = y + INITIAL_ROOT_CHILD_LINE_HEIGHT;
-    const childXOffset = halfWidth / Math.pow(2, level + 1);
+    while (queue.length > 0) {
+        const { node, x, y } = queue.shift();
+        drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + node.value);
 
-    if (currNode.leftChild !== null) {
-        const leftX = x - childXOffset;
-        drawLine(ctx, x, y, leftX, nextY);
-        setCanvas(ctx, currNode.leftChild, leftX, nextY, level + 1, "left");
-    }
+        if (node.leftChild !== null) {
+            queue.push({ node: node.leftChild, x: x - (halfWidth / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y: y + INITIAL_ROOT_CHILD_LINE_HEIGHT });
+        }
 
-    if (currNode.rightChild !== null) {
-        const rightX = x + childXOffset;
-        drawLine(ctx, x, y, rightX, nextY);
-        setCanvas(ctx, currNode.rightChild, rightX, nextY, level + 1, "right");
+        if (node.rightChild !== null) {
+            queue.push({ node: node.rightChild, x: x + (halfWidth / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y: y + INITIAL_ROOT_CHILD_LINE_HEIGHT });
+        }
     }
 }
 
 
-
-
 //draw the circles into the canvas in a preorder fashion
-function preorderDraw(root, x, y, currLineWidthDiff, ctx) {
-    if (root != null) {
-        // Draw the current node
+function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
+    if(root != null){
+        //we are drawing the root node
         drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + root.value);
-
-        // Draw the left child node
-        if (root.leftChild !== null) {
-            preorderDraw(root.leftChild, x - (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, currLineWidthDiff / 2, ctx);
-        }
-
-        // Draw the right child node
-        if (root.rightChild !== null) {
-            preorderDraw(root.rightChild, x + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, currLineWidthDiff / 2, ctx);
-        }
+        preorderDraw(root.leftChild, x - (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), y + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), root, currLineWidthDiff / 2, ctx);
+        preorderDraw(root.rightChild, x + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), y + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), root, currLineWidthDiff / 2, ctx);
     }
 }
 //Invoke when the regenerate button is clicked
 function generateTree() {
-    // Set isBSTCalled with respect to event source
     let isBSTCalled = false;
+    // set isBSTCalled with respect to event source
 
-    // Clear the canvas
-    const canvas = document.getElementById("TreePane");
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Start the generation of the tree based on the current selection
+    arr = [];
+    let length = Math.floor(Math.random() % 8) + 8;
+    for (let i = 0; i < length; i++) {
+        let newNumber = getNewNumber(arr);
+        arr.push(newNumber);
+    }
+    // start the generation of tree based on the current selection
     if (isBSTCalled) {
         currSelection = BINARY_SEARCH_TREE_SELECTION;
-        createBinarySearchTree(...arr);
     } else {
         currSelection = BINARY_TREE_SELECTION;
-        createBinaryTree(...arr);
     }
-
-    // Draw the tree
-    drawTree();
+    createBinaryTree(...arr); // Use the spread operator to pass array elements as separate arguments
 }
 
 function getNewNumber(... array){
@@ -149,43 +132,6 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fillText(nodeValue, x, y);
     ctx.fill();
 }
-function calculateTreeWidth(node) {
-    if (node === null) {
-      return 0;
-    }
-    const leftWidth = calculateTreeWidth(node.leftChild);
-    const rightWidth = calculateTreeWidth(node.rightChild);
-    return Math.max(leftWidth, rightWidth) + NODE_RADIUS * 2;
-}
-  
-function drawSubtree(ctx, node, x, y, subtreeWidth) {
-    if (node === null) {
-      return;
-    }
-  
-    const nodeX = parseInt(NODE_RADIUS * Math.sqrt(2), 10);
-  
-    drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + node.value);
-  
-    if (node.leftChild !== null) {
-      const leftX = x - (subtreeWidth / 2 + nodeX);
-      drawSubtree(ctx, node.leftChild, leftX, y + INITIAL_ROOT_CHILD_LINE_HEIGHT, subtreeWidth * NEXT_LINE_PROPORTION);
-      drawLine(ctx, x, y, leftX, y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
-    }
-  
-    if (node.rightChild !== null) {
-      const rightX = x + (subtreeWidth / 2 + nodeX);
-      drawSubtree(ctx, node.rightChild, rightX, y + INITIAL_ROOT_CHILD_LINE_HEIGHT, subtreeWidth * NEXT_LINE_PROPORTION);
-      drawLine(ctx, x, y, rightX, y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
-    }
-}
-function drawLine(ctx, startX, startY, endX, endY) {
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-}
-
 /*  // Use the onload event handler to generate and visualize the binary tree
 window.onload = () => {
     generateTree();
@@ -208,6 +154,6 @@ window.onload = () => {
 }*/
 window.onload = () => {
     generateTree();
-    drawTree();
 };
+
 
