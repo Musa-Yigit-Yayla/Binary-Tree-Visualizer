@@ -16,13 +16,15 @@ let invokeCount = 0; //this is the invoke count of getInorderSuccessor
 //creates a complete binary tree from scratch
 function createBinaryTree(...arr) {
     currSelection = BINARY_TREE_SELECTION;
+    root = null; // Reset the root before creating the tree
     generateArray(INITIAL_NODE_COUNT);
     for (let i = 0; i < arr.length; i++) {
         let curr = arr[i];
-        add(curr, arr);
+        add(curr, ...arr); // Use the spread operator to pass array elements as separate arguments
     }
-    drawTree(); // Instead of returning root, directly draw the tree
+    // Do not call drawTree() here; it will be called from the generateTree function
 }
+
 
 function createBinarySearchTree(... arr){
     currSelection = BINARY_SEARCH_TREE_SELECTION;
@@ -256,23 +258,21 @@ function addBTHelper(i, ... arr){
     }
     return curr;
 }
-function addBSTHelper(currNode, parentNode, value){
-    if(currNode === null){//correct position is found insert and link to the parent
-        let newNode = new Node(value); 
-        if(parentNode.value > value){
+function addBSTHelper(currNode, parentNode, value) {
+    if (currNode === null) {
+        let newNode = new TreeNode(value);
+        if (parentNode.value > value) {
             parentNode.leftChild = newNode;
-        }
-        else{
+        } else {
             parentNode.rightChild = newNode;
         }
+        // Return the new root node after adding the new element
+        return newNode;
+    } else if (value < currNode.value) {
+        return addBSTHelper(currNode.leftChild, currNode, value);
+    } else {
+        return addBSTHelper(currNode.rightChild, currNode, value);
     }
-    else if(value < currNode.value){
-        addBSTHelper(currNode.leftChild, currNode, value);
-    }
-    else{
-        addBSTHelper(currNode.rightChild, currNode, value);
-    }
-    //return root; //the very passed initial root is returned
 }
 //Will be used when the parent of a child node has to be retrieved
 //If the given node is a null pointer or an irrelevant node the function will return false
