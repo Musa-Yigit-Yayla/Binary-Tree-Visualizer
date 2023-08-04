@@ -154,22 +154,24 @@ function postorderTraverse(){
     return str;
 }
 function removeByValueBST(value){
+    let returnValue = false;
     if(root != null && root.value === value){
         removeRootBST();
-        return true;
+        returnValue = true;
     }
     //perform a search correlated with binary search
     //else if(this->nodeExists(givenData)){ //!!!!!! WARNING, YOU MIGHT WANT TO REMOVE THIS LINE AS IT'S ALREADY CHECKED THAT WHETHER NODE EXISTS IN GETNODEANDPARENT!!!!!!
         //retrieve the parent node of the node with givenData and retrieve that node as well
         let nodes = getNodeAndParent(root, value);
-        if(nodes != null){
+        if(nodes !== null){
             let nodeToRemove = nodes[0];
             let parent = nodes[1];
             removeHelper(nodeToRemove, parent);
-            return true;
+            returnValue = true;
         }
     //}
-    return false;
+    drawTree();
+    return returnValue;
     
 }
 function removeHelper(givenNode, parentNode){
@@ -208,7 +210,7 @@ function removeHelper(givenNode, parentNode){
     else{ //the node to be removed has two children
         //retrieve inorder successor
         let successor = null;
-        successor = (TreeNode)(getInorderSuccessor(givenNode));
+        successor = (getInorderSuccessor(givenNode));
         //retrieve the value of the successor node
         let successorString = successor.value;
         //remove the successor node, but before that retrieve its parent node
@@ -438,6 +440,25 @@ function getNodeCount(){
     let result = 0;
     //result +=     
 }
+function getNodeAndParent(root, value) {
+    let currentNode = root;
+    let parentNode = null;
+  
+    while (currentNode !== null) {
+      if (value === currentNode.value) {
+        return [currentNode, parentNode];
+      } else if (value < currentNode.value) {
+        parentNode = currentNode;
+        currentNode = currentNode.leftChild;
+      } else {
+        parentNode = currentNode;
+        currentNode = currentNode.rightChild;
+      }
+    }
+  
+    // If the value is not found in the BST
+    return [null, null];
+  }
 function postorderNodeCounter(){
 
 }

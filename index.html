@@ -58,7 +58,7 @@
         } 
         else {
             // None selected
-            return null;
+            return "bt";
         }
     }
     function getValueAndConvert(buttonId) {
@@ -66,16 +66,23 @@
         let inputText = document.getElementById("elementTf").value;
       
         // Convert the input string to an integer
-        const integerValue = parseInt(inputText);
+        let integerValue = parseInt(inputText);
       
         // Check if the conversion was successful
         if (!isNaN(integerValue)) {
             console.log("The integer value is: " + integerValue);
+            //retrieve the current tree selection
+            let currTreeSelection = getSelectedTreeType();
             if(buttonId === 'btAdd'){
-
+                add(integerValue)
             }
             else if(buttonId === 'btRemove'){
-                
+                if(currTreeSelection === "bst"){
+                    removeByValueBST(integerValue);
+                }
+                else{ //current selection represents a binary tree
+                    removeByValueBT(integerValue);
+                }
             }
         } 
         else {
