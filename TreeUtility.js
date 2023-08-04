@@ -232,8 +232,8 @@ function removeHelper(givenNode, parentNode){
 //Returns the parent node if it exists, otherwise returns nullptr
 //O(logn) time complexity
 function preorderHelper( currNode, searchNode, visit){
-    if(currNode == NULL){
-        return nullptr;
+    if(currNode == null){
+        return null;
     }
     if(visit(currNode, searchNode)){
         return currNode;
@@ -394,6 +394,7 @@ function add(value){
                 addBSTHelper( root.leftChild, root, currValue);
             }
         }
+        drawTree(); //invoke draw tree just incase we need to redraw the tree here
     }
 }
 //Binary Tree insertion helper
@@ -472,7 +473,7 @@ function addBSTHelper(currNode, parentNode, value){
 //If the given node is the predecessor of child node return true
 function isParentNode(givenNode, childNode){
     let isParent = false;
-    if(givenNode !== NULL && (givenNode.leftChild === childNode || givenNode.rightChild === childNode)){
+    if(givenNode !== null && (givenNode.leftChild === childNode || givenNode.rightChild === childNode)){
         isParent = true;
     }
     return isParent;
