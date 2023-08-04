@@ -218,7 +218,30 @@ function removeHelper(givenNode, parentNode){
         let successor = null;
         successor = (getInorderSuccessor(givenNode));
         //retrieve the value of the successor node
-        let successorString = successor.value;
+        let successorString = null;
+        if(successor !== null){
+            //This certainly implies that our node has two children
+            successorString = successor.value;;
+        }
+        else{
+            //we are totally sure that the node to be removed has a single child
+            //and it's the node's leftChild. Hence perform removal and return
+            let newChild = givenNode.leftChild;
+            if(parentNode !== null){
+                let isGivenNodeLeftChild = true;
+                if(parentNode.rightChild !== null && parentNode.rightChild.value === givenNode.value){
+                    isGivenNodeLeftChild = false;
+                }
+                if(isGivenNodeLeftChild){
+                    parentNode.leftChild = newChild;
+                }
+                else{
+                    parentNode.rightChild = rightChild;
+                }
+            }
+            //removal must be successfull now
+            return;
+        }
         //remove the successor node, but before that retrieve its parent node
         let successorParent = preorderHelper(givenNode, successor, isParentNode);
         this.removeHelper(successor, successorParent);
