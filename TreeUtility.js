@@ -31,6 +31,8 @@ function createBinaryTree() {
 
 function createBinarySearchTree(){
     currSelection = BINARY_SEARCH_TREE_SELECTION;
+    arr = [];
+    root = null; //DISCARD THE PREVIOUS TREE SO AS TO AVOID CONFLICTS !!!!!
     generateBSTArray();
     console.log("After generateBSTArray the array is: ");
     console.log(arr.join(', '));
@@ -76,7 +78,7 @@ function generateBSTArray() {
     }
 
     // Generate a max heap by inserting unique elements one by one
-    const uniqueSet = new Set();
+    let uniqueSet = new Set();
     let counter = 0;
     while (arr.length < MAX_LENGTH) {
         let newValue;
@@ -345,7 +347,7 @@ function add(value){
                 //search right subtree for proper insertion pos
                 addBSTHelper( root.rightChild, root, currValue);
             }
-            else{
+            else if(currValue < root.value){
                 addBSTHelper( root.leftChild, root, currValue);
             }
         }
