@@ -74,7 +74,12 @@
             //retrieve the current tree selection
             let currTreeSelection = getSelectedTreeType();
             if(buttonId === 'btAdd'){
-                add(integerValue)
+                if(currTreeSelection === "bst"){
+                    addSingleNodeBST(integerValue);
+                }
+                else{ //current selection represents a binary tree
+                    add(integerValue);
+                }
             }
             else if(buttonId === 'btRemove'){
                 if(currTreeSelection === "bst"){

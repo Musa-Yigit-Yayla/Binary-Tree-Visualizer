@@ -389,7 +389,7 @@ function removeByValueBT(nodeValue) {
     createBinaryTreeFromArray();
     drawTree();
   }
-  
+//This function is infact responsible of adding 
 function add(value){
     /*if(currSelection === BINARY_TREE_SELECTION && arr.length !== 0
         && arr[0] === value){
@@ -420,6 +420,37 @@ function add(value){
         drawTree(); //invoke draw tree just incase we need to redraw the tree here
     }
 }
+//add a single one and only one node to our existing bst
+function addSingleNodeBST(value) {
+    if (root === null) {
+      root = new TreeNode(value);
+      return;
+    }
+  
+    let currentNode = root;
+  
+    while(true){
+      if (value < currentNode.value) {
+        if(currentNode.leftChild === null) {
+          currentNode.leftChild = new TreeNode(value);
+          break;
+        }
+        currentNode = currentNode.leftChild;
+      } 
+      else if(value > currentNode.value){
+        if (currentNode.rightChild === null) {
+          currentNode.rightChild = new TreeNode(value);
+          break;
+        }
+        currentNode = currentNode.rightChild;
+      }
+      else{
+        return; //we cannot add since the value already exists
+      }
+    }
+    drawTree();
+}
+  
 //Binary Tree insertion helper
 //This method will only be invoked when we add the root
 function addBTHelper(i){
