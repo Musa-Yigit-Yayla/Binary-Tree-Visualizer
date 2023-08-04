@@ -39,7 +39,9 @@ function createBinarySearchTree(){
 }
 function generateBSTArray() {
     const MAX_LENGTH = 6 + Math.floor(Math.random() * 9 + 1);
-    let arr = [];
+    const RANGE_START = 1;
+    const RANGE_END = 50;
+    arr = [];
 
     // Helper function to swap elements at given indices in the array
     function swap(i, j) {
@@ -66,26 +68,32 @@ function generateBSTArray() {
             if (largestIndex !== index) {
                 swap(index, largestIndex);
                 index = largestIndex;
-            } else {
+            } 
+            else {
                 break;
             }
         }
     }
 
-    // Generate a max heap by inserting elements one by one
-    for (let i = 0; i < MAX_LENGTH; i++) {
-        arr.push(Math.floor(Math.random() * MAX_LENGTH) + 1);
+    // Generate a max heap by inserting unique elements one by one
+    const uniqueSet = new Set();
+    while (arr.length < MAX_LENGTH) {
+        const newValue = Math.floor(Math.random() * (RANGE_END - RANGE_START + 1)) + RANGE_START;
+        if (!uniqueSet.has(newValue)) {
+            arr.push(newValue);
+            uniqueSet.add(newValue);
 
-        // Percolate the newly inserted element up to its correct position in the heap
-        let currentIndex = arr.length - 1;
-        while (currentIndex > 0) {
-            let parentIndex = Math.floor((currentIndex - 1) / 2);
-            if (arr[currentIndex] <= arr[parentIndex]) {
-                break;
+            // Percolate the newly inserted element up to its correct position in the heap
+            let currentIndex = arr.length - 1;
+            while (currentIndex > 0) {
+                let parentIndex = Math.floor((currentIndex - 1) / 2);
+                if (arr[currentIndex] <= arr[parentIndex]) {
+                    break;
+                }
+
+                swap(currentIndex, parentIndex);
+                currentIndex = parentIndex;
             }
-
-            swap(currentIndex, parentIndex);
-            currentIndex = parentIndex;
         }
     }
 
@@ -95,8 +103,8 @@ function generateBSTArray() {
         heapify(0); // Percolate the root element down to its correct position in the heap
     }
 
-    return arr;
 }
+
 function preorderTraverse(currNode){
     let str = "";
     if(currNode !== null){
