@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Visualizer</title>
+    <style>
+        #github-link-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>    
 </head>
 <body>
     <div class="inputReceiver">
@@ -21,6 +28,11 @@
         <button type="button" id="btRemove" onclick="getValueAndConvert('btRemove')">remove</button>
     </div>
     <canvas id="TreePane" width="1000" height="1800"></canvas>
+    
+    <div id="github-link-container">
+        <a href="https://github.com/Musa-Yigit-Yayla" target="_blank">Yiğit's GitHub</a>
+    </div>
+    
 
     <script src="TreeNode.js"></script>
     <script src="TreeUtility.js"></script>
