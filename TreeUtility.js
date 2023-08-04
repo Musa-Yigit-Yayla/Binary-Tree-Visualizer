@@ -375,7 +375,9 @@ function add(value){
     }
     else */if(currSelection === BINARY_TREE_SELECTION){
         //add regular value
+        arr.push(value);
         createBinaryTreeFromArray();
+        drawTree();
     }
     else{
         if(root === null){
