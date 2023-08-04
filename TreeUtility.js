@@ -156,7 +156,7 @@ function postorderTraverse(){
 function removeByValueBST(value){
     let returnValue = false;
     if(root != null && root.value === value){
-        removeRootBST();
+        //removeRootBST();
         returnValue = true;
     }
     //perform a search correlated with binary search
@@ -175,6 +175,12 @@ function removeByValueBST(value){
     
 }
 function removeHelper(givenNode, parentNode){
+    if(parentNode === null){
+        //since the parentNode is passed as null, we presume that the givenNode
+        //is infact root
+        removeRootBST();
+        return;
+    }
     let isLeftChild = parentNode.leftChild === givenNode;
     if(givenNode.leftChild === null && givenNode.rightChild === null){
         //simply delete the given node
@@ -258,13 +264,15 @@ function removeRootBST(){
         root = null;
     }
     else if(root.leftChild !== null && root.rightChild === null){
+        console.log("Root to be removed has only a single left child");
         let left = root.leftChild;
-        root = null;
+        //root = null;
         root = left;
     }
     else if(root.leftChild === null && root.rightChild !== null){
+        console.log("Root to be removed has only a single right child");
         let right = root.RightChild;
-        root = null;
+        //root = null;
         root = right;
     }
     else{
@@ -274,21 +282,21 @@ function removeRootBST(){
         let nodes = getNodeAndParent(root, inorderSuccessor.value);
         let parent = nodes[1];
         let childState = -1;
-        if(parent === root && root.rightChild === inorderSuccessor && root.rightChild.rightChild === NULL){
+        if(parent === root && root.rightChild === inorderSuccessor && root.rightChild.rightChild === null){
             childState = 1; //right child is the inorder successour
         }
         //delete[] nodes; //delete the additional pointers which are futile
 
-        let isString = inorderSuccessor.str;
-        let isCounter = inorderSuccessor.counter;
+        let isValue = inorderSuccessor.value;
         removeHelper(inorderSuccessor, parent);
-        root.str = isString;
-        root.counter = isCounter;
-        if(childState === 1){
-            root.rightChild = nullptr;
-        }
+        root.value = isValue;
+        /*if(childState === 1){
+            root.rightChild = null;
+        }*/
     }
 }
+  
+  
 
 //Invoke when we need to get the inorder successor of a node
 //given string parameter is the string value of the given node which is about to be removed and certainly has 2 children
