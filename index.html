@@ -5,12 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Visualizer</title>
     <style>
-        #github-link-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .github-link-container {
+          position: absolute;
+          top: 10px;
+          right: 10px;
         }
-    </style>    
+      
+        /* Media query for mobile devices with a maximum width of 768px */
+        @media (max-width: 768px) {
+          .github-link-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            top: auto; /* Remove the top positioning */
+          }
+        }
+      </style>
+      
 </head>
 <body>
     <div class="inputReceiver">
