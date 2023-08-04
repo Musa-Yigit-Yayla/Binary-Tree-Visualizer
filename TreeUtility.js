@@ -278,6 +278,7 @@ function removeRootBST(){
     else{
         //root has two children, hence retrieve the inorder successor, and its parent, and delete that node by using regular approaches in the removeHelper
         //then copy the deleted node's contents into our root
+        console.log("Root to be removed has two children");
         let inorderSuccessor = getInorderSuccessor(root);
         let nodes = getNodeAndParent(root, inorderSuccessor.value);
         let parent = nodes[1];
@@ -288,6 +289,7 @@ function removeRootBST(){
         //delete[] nodes; //delete the additional pointers which are futile
 
         let isValue = inorderSuccessor.value;
+        console.log("Root'S inorder successor's value is " + isValue + " and its parents value is " + parent.value);
         removeHelper(inorderSuccessor, parent);
         root.value = isValue;
         /*if(childState === 1){
@@ -301,13 +303,13 @@ function removeRootBST(){
 //Invoke when we need to get the inorder successor of a node
 //given string parameter is the string value of the given node which is about to be removed and certainly has 2 children
 //Currently we are not interested with nodes that have only one child or no children
-function getInorderSuccessor(currNode){
-    invokeCount = 0;
+function getInorderSuccessor(currNode, invokeCount = 0){
+    
     let returnValue = null;
     if(currNode !== null){
         if(invokeCount === 0){
             invokeCount++;
-            returnValue = getInorderSuccessor(currNode.rightChild); //search the right subtree of the given node
+            returnValue = getInorderSuccessor(currNode.rightChild, invokeCount); //search the right subtree of the given node
         }
         else{
             if(currNode.leftChild === null){ //!!!Problem occurs here because a removed node's address still remains and we try to dereference it
@@ -317,7 +319,7 @@ function getInorderSuccessor(currNode){
                 return currNode;
             }
             else{
-                returnValue = getInorderSuccessor(currNode.leftChild);
+                returnValue = getInorderSuccessor(currNode.leftChild, invokeCount);
             }
         }
 
