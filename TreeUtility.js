@@ -45,7 +45,7 @@ function generateBSTArray() {
 
     // Helper function to swap elements at given indices in the array
     function swap(i, j) {
-        const temp = arr[i];
+        let temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
@@ -77,8 +77,15 @@ function generateBSTArray() {
 
     // Generate a max heap by inserting unique elements one by one
     const uniqueSet = new Set();
+    let counter = 0;
     while (arr.length < MAX_LENGTH) {
-        const newValue = Math.floor(Math.random() * (RANGE_END - RANGE_START + 1)) + RANGE_START;
+        let newValue;
+        if(counter === 0){
+            newValue = Math.floor(Math.random() * (Math.floor(RANGE_END / 2) - RANGE_START + 1)) + RANGE_START;
+        }
+        else{
+            newValue = Math.floor(Math.random() * RANGE_END - RANGE_START + 1) + RANGE_START;
+        }
         if (!uniqueSet.has(newValue)) {
             arr.push(newValue);
             uniqueSet.add(newValue);
@@ -95,6 +102,7 @@ function generateBSTArray() {
                 currentIndex = parentIndex;
             }
         }
+        counter++;
     }
 
     // Convert the max heap into a valid BST representation
@@ -102,7 +110,16 @@ function generateBSTArray() {
         swap(0, i); // Move the maximum element to the end of the array
         heapify(0); // Percolate the root element down to its correct position in the heap
     }
-
+    //finally remove duplicates if any
+    /*for(let i = 0; i < arr.length; i++){
+        let currKey = arr[i];
+        for(let j = i; j < arr.length; j++){
+            if(currKey === arr[j]){
+                delete arr[j];
+                j--;
+            }
+        }
+    }*/
 }
 
 function preorderTraverse(currNode){
@@ -319,12 +336,18 @@ function add(value){
     }
     else{
         if(root === null){
-            let newNode = new Node(value);
+            let newNode = new TreeNode(value);
             root = newNode;
         }
         for(let i = 1; i < arr.length; i++){
             let currValue = arr[i];
-            addBSTHelper( null, root, currValue);
+            if(currValue > root.value){
+                //search right subtree for proper insertion pos
+                addBSTHelper( root.rightChild, root, currValue);
+            }
+            else{
+                addBSTHelper( root.leftChild, root, currValue);
+            }
         }
     }
 }
@@ -387,7 +410,7 @@ function addBSTHelper(currNode, parentNode, value){
         if(parentNode.value > value){
             parentNode.leftChild = newNode;
         }
-        else{
+        else if(parentNode.value < value){
             parentNode.rightChild = newNode;
         }
     }
