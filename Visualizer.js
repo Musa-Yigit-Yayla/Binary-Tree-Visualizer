@@ -39,6 +39,8 @@ function drawTree() {
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
     setCanvas(ctx, root, halfWidth, TOP_INSET);
+
+    drawLines(ctx, root, halfWidth, TOP_INSET, halfWidth, TOP_INSET);
 }
 
 function setCanvas(ctx, root, halfWidth) {
@@ -133,6 +135,31 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fillText(nodeValue, x, y);
     ctx.fill();
 }
+function drawLines(ctx, node, x, y, parentX, parentY) {
+    if (node === null) {
+        return;
+    }
+
+    // Draw line from parent to left child
+    if (node.leftChild !== null) {
+        ctx.beginPath();
+        ctx.moveTo(parentX, parentY);
+        ctx.lineTo(x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+        ctx.stroke();
+        drawLines(ctx, node.leftChild, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, x, y);
+    }
+
+    // Draw line from parent to right child
+    if (node.rightChild !== null) {
+        ctx.beginPath();
+        ctx.moveTo(parentX, parentY);
+        ctx.lineTo(x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+        ctx.stroke();
+        drawLines(ctx, node.rightChild, x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, x, y);
+    }
+}
+
+
 /*  // Use the onload event handler to generate and visualize the binary tree
 window.onload = () => {
     generateTree();
