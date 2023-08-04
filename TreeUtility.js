@@ -8,13 +8,13 @@ const MAX_NODE_COUNT = 7;
 const INITIAL_NODE_COUNT = 7;
 
 let root = null; //root node of our current tree
-let array = null;
+//let array = null;
 let currSelection = BINARY_TREE_SELECTION;
 let invokeCount = 0; //this is the invoke count of getInorderSuccessor
 
 //expects an integer array as argument with length no more than 7
 //creates a complete binary tree from scratch
-function createBinaryTree(...arr) {
+function createBinaryTree() {
     currSelection = BINARY_TREE_SELECTION;
     generateArray(INITIAL_NODE_COUNT);
     /*for (let i = 0; i < arr.length; i++) {
@@ -231,11 +231,11 @@ function removeByValueBT(value){
             newArr.push(array[i]);
         }
     }
-    array = newArr;
-    createBinaryTree(array);
+    arr = newArr;
+    createBinaryTree(arr);
 }
 
-function add(value, ... arr){
+function add(value){
     /*if(currSelection === BINARY_TREE_SELECTION && arr.length !== 0
         && arr[0] === value){
         root = addBTHelper(0, arr);
@@ -243,7 +243,7 @@ function add(value, ... arr){
     }
     else */if(currSelection === BINARY_TREE_SELECTION){
         //add regular value
-        createBinaryTreeFromArray(arr);
+        createBinaryTreeFromArray();
     }
     else{
         if(root === null){
@@ -258,7 +258,7 @@ function add(value, ... arr){
 }
 //Binary Tree insertion helper
 //This method will only be invoked when we add the root
-function addBTHelper(i, ... arr){
+function addBTHelper(i){
     let curr = null;
     if(i < arr.length){
         curr = new TreeNode(arr[i]);
@@ -276,14 +276,15 @@ function addBTHelper(i, ... arr){
 }
 //Use this method instead of addBTHelper
 //Will be used when we create regular binary tree
-function createBinaryTreeFromArray(... arr) {
+function createBinaryTreeFromArray() {
     if (arr.length === 0) {
       return null;
     }
   
     let newRoot = new TreeNode(arr[0]);
     let parents = [newRoot];
-  
+    
+    console.log("Array length in createBTFromArray is: " + arr.length);
     for (let i = 1; i < arr.length; i++) {
       let newNode = new TreeNode(arr[i]);
       let parentNodeIndex = ((i - 1) / 2);

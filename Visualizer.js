@@ -84,13 +84,14 @@ function generateTree() {
         let newNumber = getNewNumber(arr);
         arr.push(newNumber);
     }
+    console.log("Array length in generateTree is" + arr.length);
     // start the generation of tree based on the current selection
     if (isBSTCalled) {
         currSelection = BINARY_SEARCH_TREE_SELECTION;
     } else {
         currSelection = BINARY_TREE_SELECTION;
     }
-    createBinaryTree(...arr); // Use the spread operator to pass array elements as separate arguments
+    createBinaryTree(); // Use the spread operator to pass array elements as separate arguments
 }
 
 function getNewNumber(... array){
