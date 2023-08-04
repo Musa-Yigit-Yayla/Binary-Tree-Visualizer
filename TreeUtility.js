@@ -289,7 +289,7 @@ function removeRootBST(){
         //delete[] nodes; //delete the additional pointers which are futile
 
         let isValue = inorderSuccessor.value;
-        console.log("Root'S inorder successor's value is " + isValue + " and its parents value is " + parent.value);
+        console.log("Root's inorder successor's value is " + isValue + " and its parents value is " + parent.value);
         removeHelper(inorderSuccessor, parent);
         root.value = isValue;
         /*if(childState === 1){
@@ -326,6 +326,7 @@ function getInorderSuccessor(currNode, invokeCount = 0){
     }
     return returnValue;
 }
+/*//below is the older version
 function removeByValueBT(value){
     let newArr = [];
 
@@ -336,8 +337,35 @@ function removeByValueBT(value){
     }
     arr = newArr;
     createBinaryTree(arr);
-}
-
+}*/
+function removeByValueBT(nodeValue) {
+    console.log("We are in the removeByValueBT");
+    if (arr.length === 0) {
+      return;
+    }
+    console.log("We are in the removeByValueBT1");
+    const nodeIndex = arr.indexOf(nodeValue);
+    if (nodeIndex === -1) {
+      // Node not found in the binary tree
+      return;
+    }
+    console.log("We are in the removeByValueBT2");
+    const lastIndex = arr.length - 1;
+    if (nodeIndex === lastIndex) {
+      // Node to be removed is the last node in the array
+      arr.pop();
+      console.log("We are in the removeByValueBT3");
+    } 
+    else {
+      // Node to be removed is an inner node
+      const lastNodeValue = arr.pop();
+      arr[nodeIndex] = lastNodeValue;
+      console.log("We are in the removeByValueBT4");
+    }
+    console.log("We are in the removeByValueBT5");
+    drawTree();
+  }
+  
 function add(value){
     /*if(currSelection === BINARY_TREE_SELECTION && arr.length !== 0
         && arr[0] === value){
