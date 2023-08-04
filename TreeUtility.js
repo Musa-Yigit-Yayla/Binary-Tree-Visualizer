@@ -363,6 +363,7 @@ function removeByValueBT(nodeValue) {
       console.log("We are in the removeByValueBT4");
     }
     console.log("We are in the removeByValueBT5");
+    createBinaryTreeFromArray();
     drawTree();
   }
   
