@@ -39,8 +39,6 @@ function drawTree() {
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
     setCanvas(ctx, root, halfWidth, TOP_INSET);
-
-    drawLines(ctx, root, halfWidth, TOP_INSET, halfWidth, TOP_INSET);
 }
 
 function setCanvas(ctx, node, x, y) {
@@ -50,8 +48,15 @@ function setCanvas(ctx, node, x, y) {
 
     drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + node.value);
 
-    setCanvas(ctx, node.leftChild, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
-    setCanvas(ctx, node.rightChild, x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+    if (node.leftChild !== null) {
+        drawLines(ctx, x, y, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+        setCanvas(ctx, node.leftChild, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+    }
+
+    if (node.rightChild !== null) {
+        drawLines(ctx, x, y, x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+        setCanvas(ctx, node.rightChild, x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
+    }
 }
 
 
@@ -124,28 +129,12 @@ function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth, nodeValue) {
     ctx.fillText(nodeValue, x, y);
     ctx.fill();
 }
-function drawLines(ctx, node, x, y, parentX, parentY) {
-    if (node === null) {
-        return;
-    }
-
-    // Draw line from parent to left child
-    if (node.leftChild !== null) {
-        ctx.beginPath();
-        ctx.moveTo(parentX, parentY);
-        ctx.lineTo(x - NODE_RADIUS * Math.sqrt(2), y - NODE_RADIUS * Math.sqrt(2));
-        ctx.stroke();
-        drawLines(ctx, node.leftChild, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, x - NODE_RADIUS * Math.sqrt(2), y - NODE_RADIUS * Math.sqrt(2));
-    }
-
-    // Draw line from parent to right child
-    if (node.rightChild !== null) {
-        ctx.beginPath();
-        ctx.moveTo(parentX, parentY);
-        ctx.lineTo(x + NODE_RADIUS * Math.sqrt(2), y - NODE_RADIUS * Math.sqrt(2));
-        ctx.stroke();
-        drawLines(ctx, node.rightChild, x + (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT, x + NODE_RADIUS * Math.sqrt(2), y - NODE_RADIUS * Math.sqrt(2));
-    }
+function drawLines(ctx, x1, y1, x2, y2) {
+    // Draw line from (x1, y1) to (x2, y2)
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
 }
 
 
