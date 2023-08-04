@@ -37,18 +37,65 @@ function createBinarySearchTree(){
     add(arr[0]);
     drawTree();
 }
-function generateBSTArray(){
+function generateBSTArray() {
     const MAX_LENGTH = 6 + Math.floor(Math.random() * 9 + 1);
-    arr = [];
+    let arr = [];
 
-    while (arr.length < MAX_LENGTH) {
-        let newNumber = Math.floor(Math.random() * MAX_LENGTH) + 1;
-        if (!arr.includes(newNumber)) {
-            arr.push(newNumber);
+    // Helper function to swap elements at given indices in the array
+    function swap(i, j) {
+        const temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    // Helper function to percolate an element down to its correct position in the heap
+    function heapify(index) {
+        while (true) {
+            let leftChildIndex = 2 * index + 1;
+            let rightChildIndex = 2 * index + 2;
+            let largestIndex = index;
+
+            if (leftChildIndex < arr.length && arr[leftChildIndex] > arr[largestIndex]) {
+                largestIndex = leftChildIndex;
+            }
+
+            if (rightChildIndex < arr.length && arr[rightChildIndex] > arr[largestIndex]) {
+                largestIndex = rightChildIndex;
+            }
+
+            if (largestIndex !== index) {
+                swap(index, largestIndex);
+                index = largestIndex;
+            } else {
+                break;
+            }
         }
     }
 
-  arr.sort((a, b) => a - b); // Sort the array in ascending order
+    // Generate a max heap by inserting elements one by one
+    for (let i = 0; i < MAX_LENGTH; i++) {
+        arr.push(Math.floor(Math.random() * MAX_LENGTH) + 1);
+
+        // Percolate the newly inserted element up to its correct position in the heap
+        let currentIndex = arr.length - 1;
+        while (currentIndex > 0) {
+            let parentIndex = Math.floor((currentIndex - 1) / 2);
+            if (arr[currentIndex] <= arr[parentIndex]) {
+                break;
+            }
+
+            swap(currentIndex, parentIndex);
+            currentIndex = parentIndex;
+        }
+    }
+
+    // Convert the max heap into a valid BST representation
+    for (let i = arr.length - 1; i >= 0; i--) {
+        swap(0, i); // Move the maximum element to the end of the array
+        heapify(0); // Percolate the root element down to its correct position in the heap
+    }
+
+    return arr;
 }
 function preorderTraverse(currNode){
     let str = "";
