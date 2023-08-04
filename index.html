@@ -9,10 +9,10 @@
     <div class="inputReceiver">
         <input type="text" id="elementTf" size="3">
         <label for="elementTf">Selected Element</label>
-        <button id="btGenerate" onclick="generateTree()">regenerate</button>
-        <input type="radio" value="Binary Search Tree" id="bstSelector" name="TreeTypeSelector" onclick="generateTree()">
+        <button id="btGenerate" onclick="generateTree(false)">regenerate</button>
+        <input type="radio" value="Binary Search Tree" id="bstSelector1" name="TreeTypeSelector" onclick="treeGeneratorEventHandler()">
         <label for="bstSelector">Binary Search Tree</label>
-        <input type="radio" value="Binary Tree" id="btSelector" name="TreeTypeSelector" onclick="generateTree()">
+        <input type="radio" value="Binary Tree" id="btSelector2" name="TreeTypeSelector" onclick="treeGeneratorEventHandler()">
         <label for="btSelector">Binary Tree</label>     
         
     </div>
@@ -26,10 +26,33 @@
     <script src="TreeUtility.js"></script>
     <script src="Visualizer.js"></script>
     <script>
-        generateTree();
+        generateTree(false);
         let currElt = createBinaryTree();
         drawTree(currElt);
     </script>
-    
+    <script>
+        function radioChangeEventHandler(event) {
+            // Get the selected radio button
+            const selectedRadioButton = document.querySelector('input[name="TreeTypeSelector"]:checked');
+            if (selectedRadioButton) {
+                const selectedOption = selectedRadioButton.value
+                console.log("Selected option: ", selectedOption);
+                if(selectedOption === "Binary Search Tree"){
+                    generateTree(true);
+                }
+                else if(selectedOption === "Binary Tree"){
+                    generateTree(false);
+                }
+            }
+            else {
+                console.log("No option selected");
+                generateTree(false);
+            }
+          }
+      
+          // Add event listener to each radio button
+          document.getElementById("btSelector1").addEventListener("change", radioChangeEventHandler);
+          document.getElementById("bstSelector2").addEventListener("change", radioChangeEventHandler);
+    </script>
 </body>
 </html>

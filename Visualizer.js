@@ -69,9 +69,39 @@ function preorderDraw(root, x, y, parent, currLineWidthDiff, ctx ){
         preorderDraw(root.rightChild, x + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), y + (currLineWidthDiff / 2 + NODE_RADIUS * Math.sqrt(2)), root, currLineWidthDiff / 2, ctx);
     }
 }
+function treeGeneratorEventHandler(event){
+    let sourceElement = event.target;
+
+    if(sourceElement.id === "btSelector1"){
+        //generate a binary search tree
+        generateTree(true);
+    }
+    else if(sourceElement.id === "btSelector2"){
+        //generate a regular binary tree
+        generateTree(false);
+    }
+    else if(sourceElement.id === "btGenerate"){
+        let isBSTSelected = document.getElementById("btSelector1").checked;
+        let isBTSelected = document.getElementById("btSelector2").checked;
+
+        if(!isBSTSelected && isBTSelected){
+            //generate binary tree
+            generateTree(false);
+        }
+        else if(isBSTSelected && !isBTSelected){
+            //generate bst
+            generateTree(true);
+        }
+        else{
+            //generate regular binary tree
+            generateTtree(false);
+        }
+    }
+}
 //Invoke when the regenerate button is clicked
-function generateTree() {
-    let isBSTCalled = false;
+//Invoke from the treeGeneratorEventHandler when one of the radio buttons are selected 
+function generateTree(isBSTCalled) {
+    //let isBSTCalled = false;
     // set isBSTCalled with respect to event source
 
     arr = [];
