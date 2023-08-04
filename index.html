@@ -17,8 +17,8 @@
         
     </div>
     <div>
-        <button type="button">add</button>
-        <button type="button">remove</button>
+        <button type="button" id="btAdd" onclick="getValueAndConvert('btAdd')">add</button>
+        <button type="button" id="btRemove" onclick="getValueAndConvert('btRemove')">remove</button>
     </div>
     <canvas id="TreePane" width="1000" height="1800"></canvas>
 
@@ -52,13 +52,36 @@
 
         if (bstRadioButton.checked) {
             return "bst";
-        } else if (btRadioButton.checked) {
+        } 
+        else if (btRadioButton.checked) {
             return "bt";
-        } else {
+        } 
+        else {
             // None selected
             return null;
         }
     }
+    function getValueAndConvert(buttonId) {
+        // Get the value of the text field
+        let inputText = document.getElementById("elementTf").value;
+      
+        // Convert the input string to an integer
+        const integerValue = parseInt(inputText);
+      
+        // Check if the conversion was successful
+        if (!isNaN(integerValue)) {
+            console.log("The integer value is: " + integerValue);
+            if(buttonId === 'btAdd'){
+
+            }
+            else if(buttonId === 'btRemove'){
+                
+            }
+        } 
+        else {
+          console.log("Invalid input, the given input is not an integer.");
+        }
+      }
 
     // Add event listeners to the radio buttons
     document.getElementById("bstSelector1").addEventListener("change", treeGeneratorEventHandler);
