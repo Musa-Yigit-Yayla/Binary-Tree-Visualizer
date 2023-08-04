@@ -29,9 +29,26 @@ function createBinaryTree() {
     drawTree(); // Instead of returning root, directly draw the tree
 }
 
-function createBinarySearchTree(... arr){
+function createBinarySearchTree(){
     currSelection = BINARY_SEARCH_TREE_SELECTION;
-    return createBinaryTree(arr);
+    generateBSTArray();
+    console.log("After generateBSTArray the array is: ");
+    console.log(arr.join(', '));
+    add(arr[0]);
+    drawTree();
+}
+function generateBSTArray(){
+    const MAX_LENGTH = 6 + Math.floor(Math.random() * 9 + 1);
+    arr = [];
+
+    while (arr.length < MAX_LENGTH) {
+        let newNumber = Math.floor(Math.random() * MAX_LENGTH) + 1;
+        if (!arr.includes(newNumber)) {
+            arr.push(newNumber);
+        }
+    }
+
+  arr.sort((a, b) => a - b); // Sort the array in ascending order
 }
 function preorderTraverse(currNode){
     let str = "";
@@ -311,7 +328,7 @@ function addBTHelper2(){
 }
 function addBSTHelper(currNode, parentNode, value){
     if(currNode === null){//correct position is found insert and link to the parent
-        let newNode = new Node(value); 
+        let newNode = new TreeNode(value); 
         if(parentNode.value > value){
             parentNode.leftChild = newNode;
         }

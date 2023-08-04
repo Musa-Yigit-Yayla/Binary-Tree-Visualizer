@@ -38,6 +38,10 @@ function drawTree() {
     // Proceed with drawing the tree
     const canvas = document.getElementById("TreePane");
     const ctx = canvas.getContext("2d");
+
+    //clear the previously drawn tree
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
     setCanvas(ctx, root, halfWidth, TOP_INSET);
 }
 
@@ -46,7 +50,11 @@ function setCanvas(ctx, node, x, y) {
         return;
     }
 
-    drawCircle(ctx, x, y, NODE_RADIUS, "orange", "black", 1, "" + node.value);
+    let fillColor = "orange";
+    if(currSelection === BINARY_SEARCH_TREE_SELECTION){
+        fillColor = "cyan";
+    }
+    drawCircle(ctx, x, y, NODE_RADIUS, fillColor, "black", 1, "" + node.value);
 
     if (node.leftChild !== null) {
         drawLines(ctx, x, y, x - (INITIAL_ROOT_CHILD_LINE_WIDTH / Math.pow(2, y / INITIAL_ROOT_CHILD_LINE_HEIGHT)), y + INITIAL_ROOT_CHILD_LINE_HEIGHT);
@@ -94,7 +102,7 @@ function treeGeneratorEventHandler(event){
         }
         else{
             //generate regular binary tree
-            generateTtree(false);
+            generateTree(false);
         }
     }
 }
@@ -114,10 +122,14 @@ function generateTree(isBSTCalled) {
     // start the generation of tree based on the current selection
     if (isBSTCalled) {
         currSelection = BINARY_SEARCH_TREE_SELECTION;
-    } else {
+        console.log("****************** RIGHT BEFORE CREATE BST INVOKING");
+        createBinarySearchTree();
+    } 
+    else {
         currSelection = BINARY_TREE_SELECTION;
+        createBinaryTree();
     }
-    createBinaryTree(); // Use the spread operator to pass array elements as separate arguments
+    // Use the spread operator to pass array elements as separate arguments
 }
 
 function getNewNumber(... array){

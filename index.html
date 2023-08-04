@@ -31,39 +31,41 @@
         drawTree(currElt);
     </script>
     <script>
-        function treeGeneratorEventHandler(event) {
-            let sourceElement = event.target;
-      
-            if (sourceElement.id === "btSelector1") {
-              // generate a binary search tree
-              generateTree(true);
-            } else if (sourceElement.id === "btSelector2") {
-              // generate a regular binary tree
-              generateTree(false);
-            } 
-            else if (sourceElement.id === "btGenerate") {
-              let isBSTSelected = document.getElementById("btSelector1").checked;
-              let isBTSelected = document.getElementById("btSelector2").checked;
-      
-              if (!isBSTSelected && isBTSelected) {
-                // generate binary tree
-                generateTree(false);
-              } else if (isBSTSelected && !isBTSelected) {
-                // generate bst
-                generateTree(true);
-              } else {
-                // generate regular binary tree
-                generateTree(false);
-              }
-            }
-          }
-      
-          // Add event listener to each radio button
-          document.getElementById("btSelector1").addEventListener("change", treeGeneratorEventHandler);
-          document.getElementById("btSelector2").addEventListener("change", treeGeneratorEventHandler);
-      
-          // Add event listener to the "btGenerate" button
-          document.getElementById("btGenerate").addEventListener("click", treeGeneratorEventHandler);
+        // Function to handle tree generation based on selected option
+    function treeGeneratorEventHandler() {
+        let selectedOption = getSelectedTreeType();
+        if (selectedOption === "bst") {
+            // generate binary search tree
+            console.log("****************** WE ARE ABOUT TO INVOKE GENERATE TREE FROM BST SELECTION");
+            generateTree(true);
+        } 
+        else if (selectedOption === "bt") {
+            // generate a regular binary tree
+            generateTree(false);
+        }
+    }
+
+    // Function to get the selected tree type from radio buttons
+    function getSelectedTreeType() {
+        let bstRadioButton = document.getElementById("bstSelector1");
+        let btRadioButton = document.getElementById("btSelector2");
+
+        if (bstRadioButton.checked) {
+            return "bst";
+        } else if (btRadioButton.checked) {
+            return "bt";
+        } else {
+            // None selected
+            return null;
+        }
+    }
+
+    // Add event listeners to the radio buttons
+    document.getElementById("bstSelector1").addEventListener("change", treeGeneratorEventHandler);
+    document.getElementById("btSelector2").addEventListener("change", treeGeneratorEventHandler);
+
+    // Initial tree generation on page load
+    generateTree(false);
     </script>
 </body>
 </html>
