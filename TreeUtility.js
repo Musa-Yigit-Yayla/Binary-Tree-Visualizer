@@ -236,7 +236,7 @@ function removeHelper(givenNode, parentNode){
                     parentNode.leftChild = newChild;
                 }
                 else{
-                    parentNode.rightChild = rightChild;
+                    parentNode.rightChild = newChild;
                 }
             }
             //removal must be successfull now
