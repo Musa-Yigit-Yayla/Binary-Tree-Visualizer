@@ -282,18 +282,21 @@ function createBinaryTreeFromArray() {
     }
   
     let newRoot = new TreeNode(arr[0]);
-    let parents = [newRoot];
+    let parents = [1];
+    parents[0] = newRoot;
     
     console.log("Array length in createBTFromArray is: " + arr.length);
     for (let i = 1; i < arr.length; i++) {
       let newNode = new TreeNode(arr[i]);
-      let parentNodeIndex = ((i - 1) / 2);
+      let parentNodeIndex = Math.floor((i - 1) / 2);
       let parentNode = parents[parentNodeIndex]; // Get the first node in the queue (parent of the current node)
-    
-      if (parentNodeIndex * 2 + 1 === i) {
+        console.log("Parent node's data is " + parentNode.value);
+      if (parentNodeIndex * 2 + 1 === i && parentNode !== null) {
+        console.log("Curr child is left child and its value is " + newNode.value);
         parentNode.leftChild = newNode;
       }
-      else if (parentNodeIndex * 2 + 2 === i) {
+      else if (parentNodeIndex * 2 + 2 === i && parentNode !== null) {
+        console.log("Curr child is right child and its value is " + newNode.value);
         parentNode.rightChild = newNode;
       }
   

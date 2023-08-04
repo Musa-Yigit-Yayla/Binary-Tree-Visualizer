@@ -4,11 +4,12 @@
  */
 class TreeNode{
     value;
-    leftChild = null;
-    rightChild = null;
+    leftChild;
+    rightChild;
     constructor(value){
-        value = parseInt(value, 10);
-        this.value = value;
+        this.value = parseInt(value, 10);
+        this.leftChild = null;
+        this.rightChild = null;
     }
 
 }
